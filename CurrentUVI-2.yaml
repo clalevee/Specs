@@ -1,0 +1,112 @@
+swagger: '2.0'
+info:
+  contact:
+    email: lalevee@gmail.com
+    name: Current WeatherMap API
+  description: >-
+    Get current UV index for your city.<br/>Uses OpenWeatherMap UVI API as
+    backend.
+  title: Current UVI API
+  version: '1.0'
+host: demo10-test.apigee.net
+basePath: /
+schemes:
+  - https
+paths:
+  /uvi:
+    get:
+      produces:
+        - application/json
+        - text/plain
+      parameters:
+        - description: >-
+            **Latitude**. *Example: 43.622654*. The latitude cordinate of the
+            location of your interest. Must use with `lon`.
+          in: query
+          name: lat
+          type: string
+        - description: >-
+            **Longitude**. *Example: 3.99594*. Longitude cordinate of the
+            location of your interest. Must use with `lat`.
+          in: query
+          name: lon
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/200'
+        '404':
+          description: Not found response
+          schema:
+            example: Not found
+            title: UVI not found
+            type: string
+      tags:
+        - Current UV index Data
+      description: >-
+        Access current UV data for any location on Earth including over 200,000
+        cities! Data is available in the JSON format. Data is provided only for
+        12:00 p.m.
+      operationId: CurrentUVIData
+      summary: Call current UV index data for one location
+definitions:
+  '200':
+    properties:
+      date:
+        description: ISO 8601 timestamp
+        example: 1576238400
+        format: int32
+        type: integer
+      date_iso:
+        description: date and time corresponding to returned date
+        example: '2019-12-13T12:00:00Z'
+        type: string
+      lat:
+        description: latitude for returned data
+        example: 43.622654
+        type: number
+      lon:
+        description: longitude for returned data
+        example: 3.99594
+        type: number
+      value:
+        description: >-
+          ultraviolet index, international standard measurement of the strength
+          of sunburn-producing ultraviolet (UV) radiation at a particular place
+          and time
+        example: 1.03
+        type: number
+    title: Successful response
+    type: object
+securityDefinitions:
+  apikey:
+    description: API key to authorize request.
+    in: query
+    name: apikey
+    type: apiKey
+security:
+  - apikey: []
+tags:
+  - description: Get current UV index
+    name: Current UV index Data
+externalDocs:
+  description: API Documentation
+  url: 'https://openweathermap.org/api'
+x-components:
+  parameters:
+    lat:
+      description: >-
+        **Latitude**. *Example: 43.622654*. The latitude cordinate of the
+        location of your interest. Must use with `lon`.
+      in: query
+      name: lat
+      type: string
+    lon:
+      description: >-
+        **Longitude**. *Example: 3.99594*. Longitude cordinate of the location
+        of your interest. Must use with `lat`.
+      in: query
+      name: lon
+      type: string
+
