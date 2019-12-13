@@ -1,0 +1,100 @@
+openapi: "3.0.1"
+info:
+  title: "Current UVI API"
+  description: "Get current UV index for your city.<br/>Uses OpenWeatherMap UVI API as backend."
+  version: "1.0"
+  contact:
+    name: "Current WeatherMap API"
+    email: "lalevee@gmail.com"
+
+servers:
+- url: "https://demo10-test.apigee.net/"
+
+     
+paths:
+  /uvi:
+    get:
+      tags:
+      - Current UV index Data
+      summary: "Call current UV index data for one location"
+      description: "Access current UV data for any location on Earth including over 200,000 cities! Data is available in the JSON format. Data is provided only for 12:00 p.m."
+      operationId: CurrentUVIData
+      parameters:
+        - $ref: '#/components/parameters/lat'
+        - $ref: '#/components/parameters/lon'
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/200'
+        404:
+          description: Not found response
+          content:
+            text/plain:
+              schema:
+                title: UVI not found
+                type: string
+                example: Not found
+security:
+- apikey: []
+
+tags:
+  - name: Current UV index Data
+    description: "Get current UV index"
+
+externalDocs:
+  description: API Documentation
+  url: https://openweathermap.org/api
+
+components:
+
+  parameters:
+    lat:
+      name: lat
+      in: query
+      description: "**Latitude**. *Example: 43.622654*. The latitude cordinate of the location of your interest. Must use with `lon`."
+      schema:
+        type: string
+
+    lon:
+      name: lon
+      in: query
+      description: "**Longitude**. *Example: 3.99594*. Longitude cordinate of the location of your interest. Must use with `lat`."
+      schema:
+        type: string
+
+  schemas:
+    200:
+      title: Successful response
+      type: object
+      properties:
+        lat:
+          type: number
+          description: latitude for returned data
+          example: 43.622654
+        lon:
+          type: number
+          description: longitude for returned data
+          example: 3.99594
+        date_iso:
+          type: string
+          description: date and time corresponding to returned date
+          example: "2019-12-13T12:00:00Z"
+        date:
+          type: integer
+          description: ISO 8601 timestamp
+          format: int32
+          example: 1576238400
+        value:
+          type: number
+          description: ultraviolet index, international standard measurement of the strength of sunburn-producing ultraviolet (UV) radiation at a particular place and time
+          example: 1.03
+  securitySchemes:
+    apikey:
+      type: apiKey
+      description: API key to authorize request.
+      name: apikey
+      in: query
+      
